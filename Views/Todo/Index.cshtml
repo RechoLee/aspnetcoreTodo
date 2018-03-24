@@ -20,7 +20,8 @@
         {
             <tr>
                 <td>
-                    <input type="checkbox" name="IsDone" checked="@item.IsDone" />
+                    @*<input type="checkbox" name="IsDone" checked="@item.IsDone" />*@
+                    <input type="checkbox" name="@item.Id" value="true" class="done-checkbox">
                 </td>
                 <td>@item.Id</td>
                 <td>@item.Title</td>

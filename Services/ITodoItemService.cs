@@ -11,5 +11,7 @@ namespace aspnetcoreTodo.Services
         Task<IEnumerable<TodoItem>> GetIncompleteItemAsync();
 
         Task<bool> AddItemAsync(NewTodoItem item);
+
+        Task<bool> MarkDoneAsync(Guid id);
     }
 }
