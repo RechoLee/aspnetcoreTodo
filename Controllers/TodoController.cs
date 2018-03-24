@@ -10,19 +10,28 @@ using Microsoft.AspNetCore.Identity;
 
 namespace aspnetcoreTodo.Controllers
 {
+
+    [Authorize]
     public class TodoController:Controller
     {
         private readonly ITodoItemService _todoItemService;
 
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TodoController(ITodoItemService todoItemService)
+        public TodoController(ITodoItemService todoItemService,UserManager<ApplicationUser> userManager)
         {
             _todoItemService = todoItemService;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
         {
-            var todoItems = await _todoItemService.GetIncompleteItemAsync();
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+                return Challenge();
+
+            var todoItems = await _todoItemService.GetIncompleteItemAsync(currentUser);
             var model = new TodoViewModel
             {
                 Items = todoItems
@@ -38,8 +47,12 @@ namespace aspnetcoreTodo.Controllers
                 return BadRequest(ModelState);
             }
 
+            //认证
+            var currentUser =await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+                return Unauthorized();
             
-            var successful = await _todoItemService.AddItemAsync(newItem);
+            var successful = await _todoItemService.AddItemAsync(newItem,currentUser);
 
             if (!successful)
             {
@@ -55,7 +68,12 @@ namespace aspnetcoreTodo.Controllers
             if (id == Guid.Empty)
                 return BadRequest(new {error="your id is error"});
 
-            var successful = await _todoItemService.MarkDoneAsync(id);
+            //认证
+            var currentUser =await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+                return Unauthorized();
+
+            var successful = await _todoItemService.MarkDoneAsync(id,currentUser);
 
             if (!successful)
                 return BadRequest();

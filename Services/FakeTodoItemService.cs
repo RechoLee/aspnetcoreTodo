@@ -12,7 +12,7 @@ namespace aspnetcoreTodo.Services
         /// 返回一个item数组
         /// </summary>
         /// <returns></returns>
-        public Task<IEnumerable<TodoItem>> GetIncompleteItemAsync()
+        public Task<IEnumerable<TodoItem>> GetIncompleteItemAsync(ApplicationUser user)
         {
             IEnumerable<TodoItem> items = new[]
             {
@@ -39,12 +39,12 @@ namespace aspnetcoreTodo.Services
             return Task.FromResult(items);
         }
 
-        public Task<bool> AddItemAsync(NewTodoItem item)
+        public Task<bool> AddItemAsync(NewTodoItem item,ApplicationUser user)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> MarkDoneAsync(Guid id)
+        public Task<bool> MarkDoneAsync(Guid id,ApplicationUser user)
         {
             throw new NotImplementedException();
         }
