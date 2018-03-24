@@ -5,12 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using aspnetcoreTodo.Services;
 using aspnetcoreTodo.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace aspnetcoreTodo.Controllers
 {
     public class TodoController:Controller
     {
         private readonly ITodoItemService _todoItemService;
+
 
         public TodoController(ITodoItemService todoItemService)
         {
@@ -46,7 +49,7 @@ namespace aspnetcoreTodo.Controllers
             return Ok();
         }
 
-
+        
         public async Task<IActionResult> MarkDone(Guid id)
         {
             if (id == Guid.Empty)

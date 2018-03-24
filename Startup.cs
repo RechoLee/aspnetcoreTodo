@@ -36,6 +36,16 @@ namespace aspnetcoreTodo
             //修改新的services
             services.AddScoped<ITodoItemService, TodoItemService>();
 
+            //facebook登陆的服务
+            services
+                .AddAuthentication()
+                .AddFacebook(options =>
+                {
+                    options.AppId = Configuration["Facebook:AppId"];
+                    options.AppSecret = Configuration["Facebook:AppSecret"];
+                });
+
+
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
